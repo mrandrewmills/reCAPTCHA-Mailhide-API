@@ -11,6 +11,8 @@ function encryptEmailAddress($emailAddress, $secretKey){
 			// encrypt email address with AES-128-CBC
 
 			// convert to URl-safe base64
+			$emailAddress = base64_encode($emailAddress);
+			$emailAddress = strtr($emailAddress, '+/', '-_');
 			
 			return $emailAddress;
 		}
