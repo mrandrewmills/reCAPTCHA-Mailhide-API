@@ -9,10 +9,13 @@ function encryptEmailAddress($emailAddress, $secretKey){
 			$emailAddress = $emailAddress . str_repeat( $filler, $numpad );
 
 			// encrypt email address with AES-128-CBC
+			$iv = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+			$secretKey = pack('H*', $secretKey);
+			$emailAddress = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $secretKey, $emailAddress, MCRYPT_MODE_CBC, $iv);
 
 			// convert to URl-safe base64
-			$emailAddress = base64_encode($emailAddress);
-			$emailAddress = strtr($emailAddress, '+/', '-_');
+			$emailBase64 = base64_encode($emailAddress);
+			$emailAddress = strtr($emailBase64, '+/', '-_');
 			
 			return $emailAddress;
 		}
