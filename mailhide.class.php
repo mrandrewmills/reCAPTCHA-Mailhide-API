@@ -24,11 +24,11 @@
 		}
 
 		function getPublicKey(){
-			return $this->emailAddress;
+			return $this->publicKey;
 		}
 
 		function getSecretKey(){
-			return $this->emailAddress;
+			return $this->secretKey;
 		}
 
 		function setEmailAddress($emailAddress){
