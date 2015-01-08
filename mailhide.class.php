@@ -47,29 +47,31 @@
 		function encryptEmailAddress(){
 
 			if (!$this->emailAddress) {
-				// throw an exception
+				//ToDo: throw an exception
+				return "NO EMAIL ADDRESS!";
 			}
 
 			if (!$this->secretKey) {
-				// throw an exception
+				//ToDo: throw an exception
+				return "NO SECRET KEY!";
 			}
 
 			// pad email to 16-byte boundary
 			$block_size = 16;
-			$numpad = ( $block_size - ( strlen( $emailAddress ) % $block_size ) );
+			$numpad = ( $block_size - ( strlen( $this->emailAddress ) % $block_size ) );
 			$filler = chr( $numpad );
-			$emailAddress = $emailAddress . str_repeat( $filler, $numpad );
+			$this->emailAddress .= str_repeat( $filler, $numpad );
 
 			// encrypt email address with AES-128-CBC
 			$iv = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
-			$secretKey = pack('H*', $secretKey);
-			$emailAddress = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $secretKey, $emailAddress, MCRYPT_MODE_CBC, $iv);
+			$privateKey = pack('H*', $this->secretKey);
+			$this->emailAddress = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $privateKey, $this->emailAddress, MCRYPT_MODE_CBC, $iv);
 
 			// convert to URl-safe base64
-			$emailBase64 = base64_encode($emailAddress);
-			$emailAddress = strtr($emailBase64, '+/', '-_');
+			$emailBase64 = base64_encode($this->emailAddress);
+			$this->emailAddress = strtr($emailBase64, '+/', '-_');
 			
-			return $emailAddress;		
+			return $this->emailAddress;		
 		}
 
 		function buildURL(){
