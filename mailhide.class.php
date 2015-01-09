@@ -15,6 +15,7 @@
 		private $publicKey;
 		private $secretKey;
 		private $encryptedEmail;
+		private $mailhideURL;
 
 		const blah = "http://www.google.com/recaptcha/mailhide/d";
 
@@ -69,12 +70,17 @@
 
 			// convert to URl-safe base64
 			$emailBase64 = base64_encode($this->emailAddress);
-			$this->emailAddress = strtr($emailBase64, '+/', '-_');
+			$this->encryptedEmail = strtr($emailBase64, '+/', '-_');
 			
-			return $this->emailAddress;		
+			return $this->encryptedEmail;
 		}
 
 		function buildURL(){
+			$this->mailhideURL = "http://www.google.com/recaptcha/mailhide/d";
+			$this->mailhideURL .= "?k=" . $this->publicKey;
+			$this->mailhideURL .= "&c=" . $this->encryptedEmail;
+		
+			return $this->mailhideURL;
 		}
 	}
 ?>
