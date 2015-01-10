@@ -17,7 +17,13 @@
 		private $encryptedEmail;
 		private $mailhideURL;
 
-		const blah = "http://www.google.com/recaptcha/mailhide/d";
+		// Our Constructor function
+		function Mailhide($email, $pubKey, $secKey){
+
+			if ($email) { $this->setEmailAddress($email); }
+			if ($pubKey) { $this->setPublicKey($pubKey); }
+			if ($secKey) { $this->setSecretKey($secKey); }
+		}
 
 		// Setters & Getters
 		function getEmailAddress(){
@@ -76,6 +82,11 @@
 		}
 
 		function buildURL(){
+			if (!$this->publicKey) {
+				//ToDo: throw an exception
+				return "NO PUBLIC KEY!";
+			}
+
 			$this->mailhideURL = "http://www.google.com/recaptcha/mailhide/d";
 			$this->mailhideURL .= "?k=" . $this->publicKey;
 			$this->mailhideURL .= "&c=" . $this->encryptedEmail;
